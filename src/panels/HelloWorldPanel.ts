@@ -12,6 +12,7 @@ export class HelloWorldPanel {
     this._panel = panel;
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
     this._panel.webview.html = this._getWebviewContent(this._panel.webview, extensionUri);
+    this._setWebviewMessageListener(this._panel.webview);
   }
 
   public static render(extensionUri: vscode.Uri) {
@@ -63,5 +64,22 @@ export class HelloWorldPanel {
         </body>
       </html>
     `;
+  }
+
+  private _setWebviewMessageListener(webview: vscode.Webview) {
+    webview.onDidReceiveMessage(
+      (message: any) => {
+        const command = message.command;
+        const text = message.text;
+
+        switch (command) {
+          case "hello":
+            vscode.window.showInformationMessage(text);
+            return;
+        }
+      },
+      undefined,
+      this._disposables
+    );
   }
 }
