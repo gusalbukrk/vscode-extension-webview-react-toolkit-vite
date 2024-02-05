@@ -1,4 +1,5 @@
-const { build } = require("esbuild");
+const esbuild = require("esbuild");
+const { build } = esbuild;
 
 const baseConfig = {
   bundle: true,
@@ -16,20 +17,15 @@ const extensionConfig = {
   external: ["vscode"],
 };
 
-const watchConfig = {
-  watch: {
-    onRebuild(error, result) {
-      console.log("[watch] build started");
-      if (error) {
-        error.errors.forEach(error =>
-          console.error(`> ${error.location.file}:${error.location.line}:${error.location.column}: error: ${error.text}`)
-        );
-      } else {
-        console.log("[watch] build finished");
-      }
-    },
+// https://github.com/evanw/esbuild/blob/main/CHANGELOG.md#0170
+const plugins = [{
+  name: 'my-plugin',
+  setup(build) {
+    build.onEnd(result => {
+      console.log(result);
+    });
   },
-};
+}];
 
 const webviewConfig = {
   ...baseConfig,
@@ -45,14 +41,10 @@ const webviewConfig = {
     if (args.includes("--watch")) {
       // Build and watch extension and webview code
       console.log("[watch] build started");
-      await build({
-        ...extensionConfig,
-        ...watchConfig,
-      });
-      await build({
-        ...webviewConfig,
-        ...watchConfig,
-      });
+      const extensionCtx = await esbuild.context({ ...extensionConfig, plugins });
+      await extensionCtx.watch();
+      const webviewCtx = await esbuild.context({ ...webviewConfig, plugins });
+      await webviewCtx.watch();
       console.log("[watch] build finished");
     } else {
       // Build extension and webview code
@@ -61,7 +53,7 @@ const webviewConfig = {
       console.log("build complete");
     }
   } catch (err) {
-    process.stderr.write(err.stderr);
+    console.log(err);
     process.exit(1);
   }
 })();

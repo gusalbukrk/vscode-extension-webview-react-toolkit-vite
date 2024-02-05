@@ -21,7 +21,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
-    "compile": "node ./esbuild.js",
+    "compile": "node ./esbuild.js --watch",
     "package": "NODE_ENV=production node ./esbuild.js"
   },
   "devDependencies": {
@@ -33,7 +33,7 @@
     "@typescript-eslint/parser": "^6.19.1",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.9",
-    "esbuild": "^0.16.17",
+    "esbuild": "^0.20.0",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   },
