@@ -21,8 +21,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
-    "compile": "node ./esbuild.js --watch",
-    "package": "NODE_ENV=production node ./esbuild.js"
+    "compile": "concurrently \"vite build --watch -c vite.config.extension.mts --emptyOutDir=false\" \"vite build --watch -c vite.config.webview.mts --emptyOutDir=false\"",
+    "package": "vite build --mode production -c vite.config.extension.mts && vite build --mode production -c vite.config.webview.mts --emptyOutDir=false"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
@@ -33,11 +33,14 @@
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
+    "@vitejs/plugin-react": "^4.2.1",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.9",
+    "concurrently": "^8.2.2",
     "esbuild": "^0.20.0",
     "eslint": "^8.56.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
   },
   "dependencies": {
     "@vscode/webview-ui-toolkit": "^1.4.0",

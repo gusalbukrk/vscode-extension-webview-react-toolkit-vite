@@ -6,7 +6,31 @@
 		{
 			"type": "npm",
 			"script": "compile",
-			"problemMatcher": "$esbuild-watch",
+
+			// https://code.visualstudio.com/docs/editor/tasks#_defining-a-problem-matcher
+			"problemMatcher": {
+				// not really relevant for this situation, but `pattern` is required
+				"pattern": {
+					"regexp": ".*error.*",
+				},
+
+				// https://code.visualstudio.com/docs/editor/tasks#_background-watching-tasks
+				// without the following,
+				// vscode new window with extension enabled wouldn't open after pressing F5
+				// (it would hang if wrong problemMatcher were used or display `The watch task
+				// cannot be tracked. Debug anyway?` warning if no problemMatcher were defined)
+				// that's because vscode wouldn't know when the task is finished
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": {
+						"regexp": "vite v\\d+.\\d+.\\d+ building"
+					},
+					"endsPattern": {
+						"regexp": "built in \\d+ms"
+					}
+				}
+			},
+
 			"isBackground": true,
 			"presentation": {
 				"reveal": "never"

@@ -16,5 +16,8 @@
 		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
 
 		"jsx": "react",
-	}
+	},
+
+	// otherwise, error `'vite.config.ts' is not under 'rootDir'`
+	"exclude": ["./vite.config.*.mts"]
 }
