@@ -54,12 +54,11 @@ export class HelloWorldPanel {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; font-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; font-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
           <title>Hello World!</title>
         </head>
         <body>
-          <h1>Hello World!</h1>
-          <vscode-button id="howdy">Howdy!</vscode-button>
+          <div id="root"></div>
           <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
         </body>
       </html>
@@ -73,7 +72,7 @@ export class HelloWorldPanel {
         const text = message.text;
 
         switch (command) {
-          case "hello":
+          case "howdy":
             vscode.window.showInformationMessage(text);
             return;
         }
