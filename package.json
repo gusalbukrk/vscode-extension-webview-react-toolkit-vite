@@ -21,8 +21,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
-    "compile": "concurrently \"vite build --watch -c vite.config.extension.mts --emptyOutDir=false\" \"vite build --watch -c vite.config.webview.mts --emptyOutDir=false\"",
-    "package": "vite build --mode production -c vite.config.extension.mts && vite build --mode production -c vite.config.webview.mts --emptyOutDir=false"
+    "compile": "concurrently \"tsc -watch -p ./\" \"vite build --watch -c vite.config.mts --emptyOutDir=false\"",
+    "package": "tsc -p ./ && vite build --mode production -c vite.config.mts --emptyOutDir=false"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",

@@ -19,5 +19,5 @@
 	},
 
 	// otherwise, error `'vite.config.ts' is not under 'rootDir'`
-	"exclude": ["./vite.config.*.mts"]
+	"exclude": ["./vite.config.mts", "src/test", "src/webview"],
 }

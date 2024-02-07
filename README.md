@@ -1,1 +1,1 @@
-# vscode-webview-ui-toolkit + react + vite example
+# vscode-webview-ui-toolkit + react + tsc + vite example
