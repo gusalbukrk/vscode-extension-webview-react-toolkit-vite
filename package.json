@@ -29,7 +29,8 @@
     "lint:extension": "eslint src/ --ext .ts --ignore-pattern src/webview/ --fix",
     "lint:extension:watch": "onchange -i 'src/**/*.ts' --exclude 'src/webview/**/*.ts' -- npm run lint:extension",
     "lint:webview": "eslint src/webview/ --ext .ts,.tsx --fix",
-    "lint:webview:watch": "onchange -i 'src/webview/**/*.{ts,tsx}' -- npm run lint:webview"
+    "lint:webview:watch": "onchange -i 'src/webview/**/*.{ts,tsx}' -- npm run lint:webview",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
@@ -48,6 +49,8 @@
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
     "onchange": "^7.1.0",
     "prettier": "^3.2.5",
     "typescript": "^5.3.3",
