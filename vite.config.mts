@@ -1,12 +1,12 @@
 import * as fs from 'fs';
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/frameworks/hello-world-react-vite/webview-ui/vite.config.ts
 export default defineConfig({
   build: {
     rollupOptions: {
-      external: ["vscode"],
+      external: ['vscode'],
       output: {
         entryFileNames: `webview.js`,
         chunkFileNames: `[name].js`,
@@ -14,20 +14,21 @@ export default defineConfig({
       },
     },
     sourcemap: true,
-    outDir: "out",
+    outDir: 'out',
   },
   plugins: [
     react(),
-    
+
     // https://vitejs.dev/guide/api-plugin.html
     // refer to the comments in `./index.html` for additional context
     {
       name: 'delete-index-html',
       writeBundle() {
-        fs.unlink(
-          './out/index.html',
-          err => { if (err) throw err; },
-        );
+        fs.unlink('./out/index.html', (err) => {
+          if (err) {
+            throw err;
+          }
+        });
       },
     },
   ],

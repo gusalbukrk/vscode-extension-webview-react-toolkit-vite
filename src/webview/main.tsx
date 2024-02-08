@@ -1,15 +1,20 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { provideVSCodeDesignSystem, vsCodeButton } from "@vscode/webview-ui-toolkit";
+import {
+  provideVSCodeDesignSystem,
+  vsCodeButton,
+} from '@vscode/webview-ui-toolkit';
 
 provideVSCodeDesignSystem().register(vsCodeButton());
 
 const App = () => {
   return (
-      <div>
-          <h2>Hello, world!</h2>
-          <vscode-button id="howdy" onClick={handleButtonClick}>Howdy!</vscode-button>
-      </div>
+    <div>
+      <h2>Hello, world!</h2>
+      <vscode-button id="howdy" onClick={handleButtonClick}>
+        Howdy!
+      </vscode-button>
+    </div>
   );
 };
 
@@ -18,8 +23,8 @@ console.log(vscode);
 
 function handleButtonClick() {
   vscode.postMessage({
-      command: 'howdy',
-      text: 'Hey there partner! 👋',
+    command: 'howdy',
+    text: 'Hey there partner! 👋',
   });
 }
 

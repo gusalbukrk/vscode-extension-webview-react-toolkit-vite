@@ -1,7 +1,7 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
-import { getUri } from "../utilities/getUri";
-import { getNonce } from "../utilities/getNonce";
+import { getUri } from '../utilities/getUri';
+import { getNonce } from '../utilities/getNonce';
 
 export class HelloWorldPanel {
   public static currentPanel: HelloWorldPanel | undefined;
@@ -11,7 +11,10 @@ export class HelloWorldPanel {
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this._panel = panel;
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
-    this._panel.webview.html = this._getWebviewContent(this._panel.webview, extensionUri);
+    this._panel.webview.html = this._getWebviewContent(
+      this._panel.webview,
+      extensionUri,
+    );
     this._setWebviewMessageListener(this._panel.webview);
   }
 
@@ -19,12 +22,17 @@ export class HelloWorldPanel {
     if (HelloWorldPanel.currentPanel) {
       HelloWorldPanel.currentPanel._panel.reveal(vscode.ViewColumn.One);
     } else {
-      const panel = vscode.window.createWebviewPanel("helloworld", "Hello World", vscode.ViewColumn.One, {
-        // Enable javascript in the webview
-        enableScripts: true,
-        // Restrict the webview to only load resources from the `out` directory
-        localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'out')]
-      });
+      const panel = vscode.window.createWebviewPanel(
+        'helloworld',
+        'Hello World',
+        vscode.ViewColumn.One,
+        {
+          // Enable javascript in the webview
+          enableScripts: true,
+          // Restrict the webview to only load resources from the `out` directory
+          localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'out')],
+        },
+      );
 
       HelloWorldPanel.currentPanel = new HelloWorldPanel(panel, extensionUri);
     }
@@ -43,8 +51,11 @@ export class HelloWorldPanel {
     }
   }
 
-  private _getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri) {
-    const webviewUri = getUri(webview, extensionUri, ["out", "webview.js"]);
+  private _getWebviewContent(
+    webview: vscode.Webview,
+    extensionUri: vscode.Uri,
+  ) {
+    const webviewUri = getUri(webview, extensionUri, ['out', 'webview.js']);
 
     const nonce = getNonce();
 
@@ -72,13 +83,13 @@ export class HelloWorldPanel {
         const text = message.text;
 
         switch (command) {
-          case "howdy":
+          case 'howdy':
             vscode.window.showInformationMessage(text);
             return;
         }
       },
       undefined,
-      this._disposables
+      this._disposables,
     );
   }
 }
