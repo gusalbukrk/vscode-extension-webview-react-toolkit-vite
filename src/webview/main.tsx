@@ -34,3 +34,16 @@ root.render(
     <App />
   </React.StrictMode>,
 );
+
+window.addEventListener('load', () => {
+  console.log('loaded');
+  vscode.postMessage({ command: 'loaded' });
+});
+
+window.addEventListener('message', (event) => {
+  const data = event.data;
+
+  if (data.command === 'loaded') {
+    document.querySelector('h2')!.innerText = data.text;
+  }
+});

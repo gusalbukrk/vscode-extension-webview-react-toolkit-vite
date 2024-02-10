@@ -78,13 +78,24 @@ export class HelloWorldPanel {
 
   private _setWebviewMessageListener(webview: vscode.Webview) {
     webview.onDidReceiveMessage(
-      (message: any) => {
+      async (message: any) => {
         const command = message.command;
         const text = message.text;
 
         switch (command) {
           case 'howdy':
             vscode.window.showInformationMessage(text);
+            return;
+          case 'loaded':
+            const article = await (
+              await fetch('https://jsonplaceholder.typicode.com/posts/1')
+            ).json();
+
+            this._panel.webview.postMessage({
+              command: 'loaded',
+              text: article.title,
+            });
+
             return;
         }
       },
