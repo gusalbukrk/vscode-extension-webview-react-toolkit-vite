@@ -15,6 +15,10 @@ export default defineConfig({
     },
     sourcemap: true,
     outDir: 'out',
+
+    // to support top-level await, minimal target is es2022, otherwise error during build
+    // https://esbuild.github.io/content-types/#javascript
+    // target: 'es2022',
   },
   plugins: [
     react(),
