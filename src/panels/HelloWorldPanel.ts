@@ -1,7 +1,9 @@
+import * as fs from 'node:fs';
 import * as vscode from 'vscode';
 
 import { getUri } from '../utilities/getUri';
 import { getNonce } from '../utilities/getNonce';
+import interpolateHtmlString from '../utilities/interpolateHtmlString';
 
 export class HelloWorldPanel {
   public static currentPanel: HelloWorldPanel | undefined;
@@ -27,10 +29,11 @@ export class HelloWorldPanel {
         'Hello World',
         vscode.ViewColumn.One,
         {
-          // Enable javascript in the webview
           enableScripts: true,
-          // Restrict the webview to only load resources from the `out` directory
-          localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'out')],
+          localResourceRoots: [
+            vscode.Uri.joinPath(extensionUri, 'out'),
+            vscode.Uri.joinPath(extensionUri, 'src', 'assets'),
+          ],
         },
       );
 
@@ -55,25 +58,26 @@ export class HelloWorldPanel {
     webview: vscode.Webview,
     extensionUri: vscode.Uri,
   ) {
+    const documentUri = getUri(webview, extensionUri, [
+      'src',
+      'assets',
+      'HelloWorldPanel.html',
+    ]);
+    const styleUri = getUri(webview, extensionUri, [
+      'src',
+      'assets',
+      'HelloWorldPanel.css',
+    ]);
     const webviewUri = getUri(webview, extensionUri, ['out', 'webview.js']);
 
     const nonce = getNonce();
 
-    return /*html*/ `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; font-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
-          <title>Hello World!</title>
-        </head>
-        <body>
-          <div id="root"></div>
-          <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
-        </body>
-      </html>
-    `;
+    return interpolateHtmlString(fs.readFileSync(documentUri.fsPath, 'utf8'), {
+      webview,
+      nonce,
+      styleUri,
+      webviewUri,
+    });
   }
 
   private _setWebviewMessageListener(webview: vscode.Webview) {
